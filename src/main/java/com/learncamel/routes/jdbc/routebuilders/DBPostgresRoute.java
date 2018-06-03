@@ -6,9 +6,9 @@ import org.postgresql.util.PSQLException;
 
 public class DBPostgresRoute extends RouteBuilder {
     public void configure() throws Exception {
-        onException(PSQLException.class).handled(true).log("Exception While inserting messages.");
-
+        ;
         from("direct:dbInput")
+                .onException(PSQLException.class).handled(true).log("Exception While inserting messages.").end()
                 .to("log:?level=INFO&showBody=true")
                 .process(new InsertProcessor())
                 .to("jdbc:PGDataSource")
